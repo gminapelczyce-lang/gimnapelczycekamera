@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kamera</title>
+    <style>
+      :root {
+        --bg: #f4f1e7;
+        --bg-accent: #d8e2d1;
+        --surface-strong: #ffffff;
+        --text: #1f2520;
+        --muted: #576158;
+        --line: rgba(31, 37, 32, 0.12);
+        --green-dark: #28573b;
+        --shadow: 0 30px 70px rgba(31, 37, 32, 0.14);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      body {
+        font-family: "Trebuchet MS", "Avenir Next", "Segoe UI", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, rgba(93, 138, 78, 0.2), transparent 28%),
+          radial-gradient(circle at top right, rgba(183, 192, 142, 0.18), transparent 30%),
+          linear-gradient(180deg, var(--bg-accent) 0%, var(--bg) 24%, #f8f5ec 100%);
+      }
+
+      .page {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .container {
+        width: min(1120px, calc(100% - 36px));
+        margin: 0 auto;
+      }
+
+      main {
+        flex: 1;
+        display: flex;
+        align-items: flex-start;
+        padding: 96px 0 28px;
+      }
+
+      .stream-card {
+        position: relative;
+        width: 100%;
+        padding: 34px 28px 28px;
+        background: var(--surface-strong);
+        border: 1px solid rgba(31, 37, 32, 0.08);
+        border-radius: 30px;
+        box-shadow: var(--shadow);
+      }
+
+      .brand-mark {
+        position: absolute;
+        top: -28px;
+        left: 42px;
+        width: 112px;
+        height: 129px;
+        object-fit: contain;
+        filter: drop-shadow(0 14px 24px rgba(31, 37, 32, 0.16));
+      }
+
+      .stream-header {
+        display: flex;
+        align-items: flex-start;
+        min-height: 88px;
+        padding-left: 146px;
+      }
+
+      .stream-card h1 {
+        margin: 0;
+        font-size: clamp(2rem, 1.5rem + 1.45vw, 3rem);
+        font-weight: 700;
+        line-height: 1.08;
+        letter-spacing: -0.03em;
+      }
+
+      .stream-wrapper {
+        overflow: hidden;
+        margin-top: 22px;
+        border-radius: 24px;
+        border: 1px solid rgba(40, 87, 59, 0.12);
+        background: #dbe3d8;
+        aspect-ratio: 16 / 8.5;
+      }
+
+      .stream-wrapper iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+        display: block;
+      }
+
+      footer {
+        padding: 18px 0 24px;
+      }
+
+      .footer-bar {
+        padding: 16px 22px;
+        text-align: center;
+        color: var(--muted);
+        background: rgba(255, 255, 255, 0.8);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+      }
+
+      .footer-bar a {
+        color: var(--green-dark);
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .footer-bar a:hover,
+      .footer-bar a:focus-visible {
+        text-decoration: underline;
+      }
+
+      @media (max-width: 760px) {
+        .container {
+          width: min(100%, calc(100% - 24px));
+        }
+
+        main {
+          padding-top: 74px;
+        }
+
+        .stream-card {
+          padding: 20px;
+          border-radius: 22px;
+        }
+
+        .brand-mark {
+          position: static;
+          width: 84px;
+          height: 98px;
+          margin-bottom: 10px;
+        }
+
+        .stream-header {
+          display: block;
+          min-height: 0;
+          padding-left: 0;
+        }
+
+        .stream-card h1 {
+          font-size: clamp(1.7rem, 1.25rem + 2vw, 2.3rem);
+        }
+
+        .stream-wrapper {
+          aspect-ratio: 16 / 9;
+          border-radius: 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <main class="container">
+        <section class="stream-card" aria-labelledby="stream-title">
+          <div class="stream-header">
+            <img class="brand-mark" src="./logo.png" alt="Herb Pełczyc" />
+            <h1 id="stream-title">System obserwacji ptaków jezioro Stawno</h1>
+          </div>
+          <div class="stream-wrapper">
+            <iframe
+              title="YouTube video player"
+              loading="lazy"
+              src="https://www.youtube.com/embed/y9t1g8Ike6g?si=6dQVcCu0mqfnxka9&amp;controls=0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </section>
+      </main>
+
+      <footer class="container">
+        <div class="footer-bar">
+          made by <a href="https://www.roto-tech.org/" target="_blank" rel="noreferrer">roto-tech</a>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
