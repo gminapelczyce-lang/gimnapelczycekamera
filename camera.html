@@ -155,11 +155,20 @@
       }
 
       .footer-links {
-        display: flex;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
         align-items: center;
-        justify-content: space-between;
         gap: 16px;
         width: 100%;
+      }
+
+      .footer-center {
+        text-align: center;
+        font-weight: 700;
+      }
+
+      .footer-links a:last-child {
+        justify-self: end;
       }
 
       .footer-bar a {
@@ -174,10 +183,22 @@
       }
 
       @media (max-width: 760px) {
-        .footer-bar,
+        .footer-bar {
+          align-items: stretch;
+        }
+
         .footer-links {
+          display: flex;
           flex-direction: column;
           align-items: flex-start;
+        }
+
+        .footer-links a:last-child {
+          justify-self: auto;
+        }
+
+        .footer-center {
+          text-align: left;
         }
         .container {
           width: min(100%, calc(100% - 24px));
@@ -247,6 +268,7 @@
         <div class="footer-bar">
           <div class="footer-links">
             <a href="https://www.roto-tech.org/" target="_blank" rel="noreferrer">made by roto-tech</a>
+            <div class="footer-center">&copy; 2026 Gmina Pełczyce</div>
             <a href="./privacy.html">Polityka prywatności</a>
           </div>
         </div>
