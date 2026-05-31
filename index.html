@@ -90,6 +90,7 @@
 
       .stream-wrapper {
         overflow: hidden;
+        position: relative;
         margin-top: 22px;
         border-radius: 24px;
         border: 1px solid rgba(40, 87, 59, 0.12);
@@ -103,6 +104,20 @@
         border: 0;
         display: block;
         background: #000000;
+      }
+
+      .stream-message {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        color: #ffffff;
+        text-align: center;
+        font-weight: 700;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+        pointer-events: none;
       }
 
       footer {
@@ -177,6 +192,7 @@
           </div>
           <div class="stream-wrapper">
             <video id="live" controls autoplay muted playsinline></video>
+            <div id="stream-message" class="stream-message"></div>
           </div>
         </section>
       </main>
@@ -187,18 +203,87 @@
         </div>
       </footer>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="https://stream.gminapelczyce.com/cam1/hls.min.js"></script>
     <script>
       const video = document.getElementById("live");
+      const message = document.getElementById("stream-message");
+      const retryPause = 2000;
       const url = "https://stream.gminapelczyce.com/cam1/index.m3u8";
+      const defaultControls = video.controls;
 
-      if (Hls.isSupported()) {
-        const hls = new Hls();
-        hls.loadSource(url);
-        hls.attachMedia(video);
-      } else {
-        video.src = url;
-      }
+      const setMessage = (text) => {
+        message.textContent = text;
+        video.controls = text ? false : defaultControls;
+      };
+
+      const isIOS = () =>
+        /iPad|iPhone|iPod/.test(navigator.platform) ||
+        (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+      const loadStream = () => {
+        if (window.Hls && Hls.isSupported() && !isIOS()) {
+          const hls = new Hls({
+            maxLiveSyncPlaybackRate: 1.5,
+          });
+
+          hls.on(Hls.Events.ERROR, (_event, data) => {
+            if (!data.fatal) {
+              return;
+            }
+
+            hls.destroy();
+
+            if (data.details === "manifestIncompatibleCodecsError") {
+              setMessage("Przegladarka nie obsluguje tego formatu streamu.");
+            } else if (data.response && data.response.code === 404) {
+              setMessage("Stream chwilowo niedostepny. Ponawiam polaczenie...");
+            } else {
+              setMessage("Blad odtwarzania. Ponawiam polaczenie...");
+            }
+
+            window.setTimeout(loadStream, retryPause);
+          });
+
+          hls.on(Hls.Events.MEDIA_ATTACHED, () => {
+            hls.loadSource(url);
+          });
+
+          hls.on(Hls.Events.MANIFEST_LOADED, () => {
+            setMessage("");
+            video.play().catch(() => {});
+          });
+
+          video.onplay = () => {
+            if (hls.liveSyncPosition) {
+              video.currentTime = hls.liveSyncPosition;
+            }
+          };
+
+          hls.attachMedia(video);
+          return;
+        }
+
+        if (video.canPlayType("application/vnd.apple.mpegurl")) {
+          fetch(url)
+            .then(() => {
+              video.src = url;
+              setMessage("");
+              return video.play();
+            })
+            .catch(() => {
+              setMessage("Stream chwilowo niedostepny. Ponawiam polaczenie...");
+              window.setTimeout(loadStream, retryPause);
+            });
+          return;
+        }
+
+        setMessage("Ta przegladarka nie obsluguje transmisji na zywo.");
+      };
+
+      window.addEventListener("load", () => {
+        setMessage("Ladowanie transmisji...");
+        loadStream();
+      });
     </script>
   </body>
 </html>
