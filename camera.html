@@ -298,7 +298,7 @@
             ></iframe>
           </div>
           <div id="mobile-stream-fallback" class="mobile-stream-fallback" hidden>
-            <p>Na telefonie transmisja moze dzialac stabilniej po bezposrednim otwarciu streamu.</p>
+            <p>Na telefonie transmisja moze dzialac stabilniej po bezposrednim otwarciu streamu. Na iPhonie moze byc potrzebne reczne uruchomienie odtwarzania.</p>
             <a id="mobile-stream-button" class="mobile-stream-button" href="https://stream.gminapelczyce.com/cam1/?controls=1&muted=1&autoplay=1&playsinline=1">Otworz transmisje</a>
           </div>
         </section>
@@ -317,11 +317,14 @@
     <script>
       const params = new URLSearchParams(window.location.search);
       const camera = params.get("camera") || "1";
-      const directStreamUrl = "https://stream.gminapelczyce.com/cam1/?controls=1&muted=1&autoplay=1&playsinline=1";
-      const isMobileDevice = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.matchMedia("(max-width: 760px)").matches;
+      const desktopStreamUrl = "https://stream.gminapelczyce.com/cam1/?controls=1&muted=1&autoplay=1&playsinline=1";
+      const iosStreamUrl = "https://stream.gminapelczyce.com/cam1/?controls=1&playsinline=1";
+      const isIOSDevice = /iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+      const isMobileDevice = isIOSDevice || /Android/i.test(navigator.userAgent) || window.matchMedia("(max-width: 760px)").matches;
       document.title = "Kamera " + camera + " | System obserwacji ptakow";
       document.getElementById("stream-title").textContent = "Kamera " + camera;
-      document.getElementById("mobile-stream-button").href = directStreamUrl;
+      document.getElementById("mobile-stream-button").href = isIOSDevice ? iosStreamUrl : desktopStreamUrl;
+      document.getElementById("mobile-stream-button").textContent = isIOSDevice ? "Otworz transmisje i uruchom recznie" : "Otworz transmisje";
 
       if (isMobileDevice) {
         document.getElementById("embed-stream").hidden = true;
