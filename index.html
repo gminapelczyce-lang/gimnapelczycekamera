@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="System obserwacji ptakow w gminie Pelczyce. Wybierz kamere i zobacz podglad online z obszaru jeziora Stawno."
+      content="System obserwacji ptaków w gminie Pełczyce. Wybierz kamerę i zobacz podgląd online z obszaru jeziora Stawno."
     />
     <link rel="icon" type="image/png" href="./logo.png" />
-    <title>System obserwacji ptakow | Gmina Pelczyce</title>
+    <title>System obserwacji ptaków | Gmina Pełczyce</title>
     <style>
       :root {
         --bg: #f4f1e7;
@@ -107,6 +107,23 @@
         margin-top: 26px;
       }
 
+      .official-link-wrap {
+        display: flex;
+        justify-content: center;
+        margin-top: 24px;
+      }
+
+      .official-link {
+        color: var(--green-dark);
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .official-link:hover,
+      .official-link:focus-visible {
+        text-decoration: underline;
+      }
+
       .camera-link {
         display: flex;
         align-items: center;
@@ -137,11 +154,22 @@
 
       .footer-bar {
         padding: 16px 22px;
-        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
         color: var(--muted);
         background: rgba(255, 255, 255, 0.8);
         border: 1px solid var(--line);
         border-radius: 20px;
+      }
+
+      .footer-links {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        width: 100%;
       }
 
       .footer-bar a {
@@ -156,6 +184,11 @@
       }
 
       @media (max-width: 760px) {
+        .footer-bar,
+        .footer-links {
+          flex-direction: column;
+          align-items: flex-start;
+        }
         .container {
           width: min(100%, calc(100% - 24px));
         }
@@ -204,8 +237,8 @@
           <div class="card-header">
             <img class="brand-mark" src="./logo.png" alt="Herb Pelczyc" />
             <div>
-              <h1 id="cameras-title">System obserwacji ptakow jezioro Stawno</h1>
-              <p class="camera-intro">Wybierz kamere, aby przejsc do podgladu na zywo.</p>
+              <h1 id="cameras-title">System obserwacji ptaków jezioro Stawno</h1>
+              <p class="camera-intro">Wybierz kamerę, aby przejść do podglądu na żywo.</p>
             </div>
           </div>
           <div class="camera-grid">
@@ -214,12 +247,18 @@
             <a class="camera-link" href="./camera.html?camera=3">Kamera 3</a>
             <a class="camera-link" href="./camera.html?camera=4">Kamera 4</a>
           </div>
+          <div class="official-link-wrap">
+            <a class="official-link" href="https://pelczyce.pl/" target="_blank" rel="noreferrer">Oficjalna strona Gminy Pełczyce</a>
+          </div>
         </section>
       </main>
 
       <footer class="container">
         <div class="footer-bar">
-          made by <a href="https://www.roto-tech.org/" target="_blank" rel="noreferrer">roto-tech</a>
+          <div class="footer-links">
+            <a href="https://www.roto-tech.org/" target="_blank" rel="noreferrer">made by roto-tech</a>
+            <a href="./privacy.html">Polityka prywatności</a>
+          </div>
         </div>
       </footer>
     </div>

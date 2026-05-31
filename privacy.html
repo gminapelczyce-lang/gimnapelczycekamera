@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Polityka prywatności systemu obserwacji ptaków w gminie Pełczyce. Informacje o transmisji live, danych technicznych i cookies."
+    />
+    <link rel="icon" type="image/png" href="./logo.png" />
+    <title>Polityka prywatności | System obserwacji ptaków</title>
+    <style>
+      :root {
+        --bg: #f4f1e7;
+        --bg-accent: #d8e2d1;
+        --surface-strong: #ffffff;
+        --text: #1f2520;
+        --muted: #576158;
+        --line: rgba(31, 37, 32, 0.12);
+        --green-dark: #28573b;
+        --shadow: 0 30px 70px rgba(31, 37, 32, 0.14);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      body {
+        font-family: "Trebuchet MS", "Avenir Next", "Segoe UI", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, rgba(93, 138, 78, 0.2), transparent 28%),
+          radial-gradient(circle at top right, rgba(183, 192, 142, 0.18), transparent 30%),
+          linear-gradient(180deg, var(--bg-accent) 0%, var(--bg) 24%, #f8f5ec 100%);
+      }
+
+      .page {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .container {
+        width: min(1120px, calc(100% - 36px));
+        margin: 0 auto;
+      }
+
+      main {
+        flex: 1;
+        display: flex;
+        align-items: flex-start;
+        padding: 96px 0 28px;
+      }
+
+      .policy-card {
+        position: relative;
+        width: 100%;
+        padding: 34px 28px 28px;
+        background: var(--surface-strong);
+        border: 1px solid rgba(31, 37, 32, 0.08);
+        border-radius: 30px;
+        box-shadow: var(--shadow);
+      }
+
+      .brand-mark {
+        position: absolute;
+        top: -28px;
+        left: 42px;
+        width: 112px;
+        height: 129px;
+        object-fit: contain;
+        filter: drop-shadow(0 14px 24px rgba(31, 37, 32, 0.16));
+      }
+
+      .policy-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 20px;
+        min-height: 88px;
+        padding-left: 146px;
+      }
+
+      .policy-title h1 {
+        margin: 0;
+        font-size: clamp(2rem, 1.5rem + 1.45vw, 3rem);
+        font-weight: 700;
+        line-height: 1.08;
+        letter-spacing: -0.03em;
+      }
+
+      .policy-title p {
+        margin: 14px 0 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 18px;
+        border-radius: 999px;
+        border: 1px solid rgba(40, 87, 59, 0.12);
+        background: linear-gradient(145deg, #f9fbf5, #eaf1df);
+        color: var(--green-dark);
+        font-weight: 700;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .back-link:hover,
+      .back-link:focus-visible,
+      .footer-bar a:hover,
+      .footer-bar a:focus-visible,
+      .policy-copy a:hover,
+      .policy-copy a:focus-visible {
+        text-decoration: underline;
+      }
+
+      .policy-copy {
+        margin-top: 24px;
+        line-height: 1.75;
+      }
+
+      .policy-copy h2 {
+        margin: 26px 0 12px;
+        font-size: 1.25rem;
+      }
+
+      .policy-copy p,
+      .policy-copy ul {
+        margin: 0 0 16px;
+      }
+
+      .policy-copy ul {
+        padding-left: 22px;
+      }
+
+      .policy-copy a,
+      .footer-bar a {
+        color: var(--green-dark);
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      footer {
+        padding: 18px 0 24px;
+      }
+
+      .footer-bar {
+        padding: 16px 22px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        color: var(--muted);
+        background: rgba(255, 255, 255, 0.8);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+      }
+
+      .footer-links {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        width: 100%;
+      }
+
+      @media (max-width: 760px) {
+        .container {
+          width: min(100%, calc(100% - 24px));
+        }
+
+        main {
+          padding-top: 74px;
+        }
+
+        .policy-card {
+          padding: 20px;
+          border-radius: 22px;
+        }
+
+        .brand-mark {
+          position: static;
+          width: 84px;
+          height: 98px;
+          margin-bottom: 10px;
+        }
+
+        .policy-header {
+          display: block;
+          min-height: 0;
+          padding-left: 0;
+        }
+
+        .policy-title {
+          margin-bottom: 18px;
+        }
+
+        .policy-title h1 {
+          font-size: clamp(1.7rem, 1.25rem + 2vw, 2.3rem);
+        }
+
+        .footer-bar,
+        .footer-links {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <main class="container">
+        <section class="policy-card" aria-labelledby="policy-title">
+          <div class="policy-header">
+            <img class="brand-mark" src="./logo.png" alt="Herb Pełczyc" />
+            <div class="policy-title">
+              <h1 id="policy-title">Polityka prywatności</h1>
+              <p>Informacje o przetwarzaniu danych w ramach strony i transmisji live.</p>
+            </div>
+            <a class="back-link" href="./index.html">Wstecz</a>
+          </div>
+          <article class="policy-copy">
+            <h2>1. Administrator danych</h2>
+            <p>Administratorem danych związanych z działaniem strony internetowej jest <strong>Gmina Pełczyce</strong>.</p>
+            <p>Kontakt w sprawach dotyczących prywatności: <strong><a href="mailto:umig@pelczyce.pl">umig@pelczyce.pl</a></strong>.</p>
+
+            <h2>2. Zakres działania strony</h2>
+            <p>Strona służy do udostępniania informacji oraz transmisji live z kamer obserwujących ptaki i przyrodę.</p>
+            <p>Strona nie umożliwia zakładania kont, nie prowadzi newslettera, nie zawiera formularzy kontaktowych i nie korzysta z narzędzi analitycznych ani reklamowych.</p>
+
+            <h2>3. Jakie dane mogą być przetwarzane</h2>
+            <p>Podczas korzystania ze strony mogą być automatycznie przetwarzane techniczne dane połączenia, takie jak:</p>
+            <ul>
+              <li>adres IP,</li>
+              <li>data i godzina połączenia,</li>
+              <li>adres żądanej strony,</li>
+              <li>informacje o przeglądarce i systemie operacyjnym,</li>
+              <li>podstawowe logi serwera.</li>
+            </ul>
+            <p>Dane te są przetwarzane wyłącznie w celu zapewnienia działania strony, transmisji live, bezpieczeństwa technicznego oraz diagnostyki błędów.</p>
+
+            <h2>4. Transmisja live</h2>
+            <p>Transmisja live jest prowadzona w celu obserwacji ptaków i przyrody.</p>
+            <p>Kamery nie są przeznaczone do identyfikacji osób ani monitorowania zachowań osób. W przypadku przypadkowego uchwycenia osób w kadrze obraz nie jest wykorzystywany do ich identyfikacji.</p>
+
+            <h2>5. Podstawa prawna</h2>
+            <p>Podstawą przetwarzania technicznych danych połączenia jest prawnie uzasadniony interes administratora polegający na zapewnieniu działania strony, bezpieczeństwa usługi i obsługi transmisji live.</p>
+
+            <h2>6. Odbiorcy danych</h2>
+            <p>Dane techniczne mogą być przetwarzane przez dostawców usług technicznych, w szczególności:</p>
+            <ul>
+              <li>dostawcę hostingu strony,</li>
+              <li>dostawcę serwera wykorzystywanego do transmisji live,</li>
+              <li>podmioty zapewniające obsługę techniczną strony i streamingu.</li>
+            </ul>
+
+            <h2>7. Okres przechowywania</h2>
+            <p>Logi techniczne są przechowywane wyłącznie przez okres niezbędny do zapewnienia bezpieczeństwa, diagnostyki i prawidłowego działania strony, a następnie są usuwane lub nadpisywane.</p>
+
+            <h2>8. Cookies</h2>
+            <p>Strona nie wykorzystuje plików cookies do analityki, reklamy ani profilowania użytkowników.</p>
+            <p>W ramach działania transmisji live mogą być stosowane techniczne pliki cookies niezbędne do prawidłowego działania odtwarzacza video oraz obsługi sesji transmisji. Dotyczy to w szczególności plików cookies ustawianych przez subdomenę <code>stream.gminapelczyce.com</code>, takich jak:</p>
+            <ul>
+              <li><code>cookieCheck</code> - techniczny plik cookie służący do sprawdzenia obsługi cookies przez przeglądarkę,</li>
+              <li><code>hlsSession</code> - techniczny plik cookie związany z obsługą sesji odtwarzania strumienia HLS.</li>
+            </ul>
+            <p>Pliki te mają charakter sesyjny i nie są wykorzystywane do analityki, reklamy ani profilowania użytkowników.</p>
+
+            <h2>9. Prawa użytkownika</h2>
+            <p>Użytkownikowi przysługuje prawo:</p>
+            <ul>
+              <li>dostępu do danych,</li>
+              <li>sprostowania danych,</li>
+              <li>usunięcia danych,</li>
+              <li>ograniczenia przetwarzania,</li>
+              <li>wniesienia sprzeciwu wobec przetwarzania,</li>
+              <li>złożenia skargi do Prezesa Urzędu Ochrony Danych Osobowych.</li>
+            </ul>
+
+            <h2>10. Kontakt</h2>
+            <p>W sprawach dotyczących prywatności można kontaktować się pod adresem: <strong><a href="mailto:umig@pelczyce.pl">umig@pelczyce.pl</a></strong>.</p>
+          </article>
+        </section>
+      </main>
+
+      <footer class="container">
+        <div class="footer-bar">
+          <div class="footer-links">
+            <a href="https://www.roto-tech.org/" target="_blank" rel="noreferrer">made by roto-tech</a>
+            <a href="./privacy.html">Polityka prywatności</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
