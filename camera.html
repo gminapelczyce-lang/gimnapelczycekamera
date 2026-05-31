@@ -138,6 +138,42 @@
         background: #000000;
       }
 
+      .mobile-stream-fallback {
+        margin-top: 22px;
+        padding: 28px 24px;
+        border-radius: 24px;
+        border: 1px solid rgba(40, 87, 59, 0.12);
+        background: linear-gradient(145deg, #f9fbf5, #eaf1df);
+        text-align: center;
+      }
+
+      .mobile-stream-fallback[hidden] {
+        display: none;
+      }
+
+      .mobile-stream-fallback p {
+        margin: 0 0 16px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .mobile-stream-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 22px;
+        border-radius: 999px;
+        background: var(--green-dark);
+        color: #ffffff;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .mobile-stream-button:hover,
+      .mobile-stream-button:focus-visible {
+        text-decoration: underline;
+      }
+
       footer {
         padding: 18px 0 24px;
       }
@@ -252,7 +288,7 @@
             </div>
             <a class="back-link" href="./index.html">Wstecz</a>
           </div>
-          <div class="stream-wrapper">
+          <div id="embed-stream" class="stream-wrapper">
             <iframe
               title="Transmisja na zywo"
               src="https://stream.gminapelczyce.com/cam1/?controls=1&muted=1&autoplay=1&playsinline=1"
@@ -260,6 +296,10 @@
               referrerpolicy="strict-origin-when-cross-origin"
               allowfullscreen
             ></iframe>
+          </div>
+          <div id="mobile-stream-fallback" class="mobile-stream-fallback" hidden>
+            <p>Na telefonie transmisja moze dzialac stabilniej po bezposrednim otwarciu streamu.</p>
+            <a id="mobile-stream-button" class="mobile-stream-button" href="https://stream.gminapelczyce.com/cam1/?controls=1&muted=1&autoplay=1&playsinline=1">Otworz transmisje</a>
           </div>
         </section>
       </main>
@@ -277,8 +317,16 @@
     <script>
       const params = new URLSearchParams(window.location.search);
       const camera = params.get("camera") || "1";
+      const directStreamUrl = "https://stream.gminapelczyce.com/cam1/?controls=1&muted=1&autoplay=1&playsinline=1";
+      const isMobileDevice = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.matchMedia("(max-width: 760px)").matches;
       document.title = "Kamera " + camera + " | System obserwacji ptakow";
       document.getElementById("stream-title").textContent = "Kamera " + camera;
+      document.getElementById("mobile-stream-button").href = directStreamUrl;
+
+      if (isMobileDevice) {
+        document.getElementById("embed-stream").hidden = true;
+        document.getElementById("mobile-stream-fallback").hidden = false;
+      }
     </script>
   </body>
 </html>
