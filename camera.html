@@ -3,7 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kamera</title>
+    <meta
+      name="description"
+      content="Podglad online systemu obserwacji ptakow w gminie Pelczyce. Kamera na zywo z obszaru jeziora Stawno."
+    />
+    <link rel="icon" type="image/png" href="./logo.png" />
+    <title>Kamera 1 | System obserwacji ptakow</title>
     <style>
       :root {
         --bg: #f4f1e7;
@@ -231,7 +236,7 @@
     <script>
       const params = new URLSearchParams(window.location.search);
       const camera = params.get("camera") || "1";
-      document.title = "Kamera " + camera;
+      document.title = "Kamera " + camera + " | System obserwacji ptakow";
       document.getElementById("stream-title").textContent = "Kamera " + camera;
     </script>
   </body>
