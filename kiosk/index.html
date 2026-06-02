@@ -383,10 +383,10 @@
         <div class="landing-spacer" aria-hidden="true"></div>
       </div>
       <div class="camera-grid">
-        <button class="camera-link" data-camera="cam1" data-label="Kamera 1">Kamera 1</button>
-        <button class="camera-link" data-camera="cam2" data-label="Kamera 2">Kamera 2</button>
-        <button class="camera-link" data-camera="cam3" data-label="Kamera 3">Kamera 3</button>
-        <button class="camera-link" data-camera="cam4" data-label="Kamera 4">Kamera 4</button>
+        <button class="camera-link" data-camera="cam1" data-label="Kamera 1" data-stream-url="https://stream.gminapelczyce.com/cam1/">Kamera 1</button>
+        <button class="camera-link" data-camera="cam2" data-label="Kamera 2" data-stream-url="https://stream.gminapelczyce.com/cam2/">Kamera 2</button>
+        <button class="camera-link" data-camera="cam3" data-label="Kamera 3" data-stream-url="https://stream.gminapelczyce.com/cam3/">Kamera 3</button>
+        <button class="camera-link" data-camera="cam4" data-label="Kamera 4" data-stream-url="https://stream.gminapelczyce.com/cam4/">Kamera 4</button>
       </div>
     </section>
   </main>
@@ -436,14 +436,14 @@
     const ptzButtons = document.querySelectorAll('[data-ptz-action]');
     let currentCamera = 'cam1';
 
-    function setCamera(camera, label) {
+    function setCamera(camera, label, streamUrl) {
       currentCamera = camera;
       cameraTitle.textContent = label;
-      viewer.src = `${STREAM_BASE_URL}/${camera}/`;
+      viewer.src = streamUrl;
     }
 
-    function openCamera(camera, label) {
-      setCamera(camera, label);
+    function openCamera(camera, label, streamUrl) {
+      setCamera(camera, label, streamUrl);
       landing.classList.remove('active');
       cameraScreen.classList.add('active');
     }
@@ -494,7 +494,7 @@
 
     cameraButtons.forEach((button) => {
       button.addEventListener('click', () => {
-        openCamera(button.dataset.camera, button.dataset.label);
+        openCamera(button.dataset.camera, button.dataset.label, button.dataset.streamUrl);
       });
     });
 
@@ -503,7 +503,7 @@
     });
 
     backButton.addEventListener('click', goHome);
-    setCamera(currentCamera, 'Kamera 1');
+    setCamera(currentCamera, 'Kamera 1', 'https://stream.gminapelczyce.com/cam1/');
 
     if (window.lucide) {
       window.lucide.createIcons();
