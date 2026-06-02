@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kiosk kamer</title>
+  <style>
+    :root {
+      --bg: #f4f1e7;
+      --bg-accent: #d8e2d1;
+      --surface-strong: #ffffff;
+      --text: #1f2520;
+      --muted: #576158;
+      --line: rgba(31, 37, 32, 0.12);
+      --green-dark: #28573b;
+      --shadow: 0 30px 70px rgba(31, 37, 32, 0.14);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      font-family: "Trebuchet MS", "Avenir Next", "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(93, 138, 78, 0.2), transparent 28%),
+        radial-gradient(circle at top right, rgba(183, 192, 142, 0.18), transparent 30%),
+        linear-gradient(180deg, var(--bg-accent) 0%, var(--bg) 24%, #f8f5ec 100%);
+    }
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    .landing {
+      min-height: 100svh;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+    }
+
+    .landing-card {
+      width: min(1120px, 100%);
+      padding: 30px;
+      border-radius: 30px;
+      background: var(--surface-strong);
+      border: 1px solid rgba(31, 37, 32, 0.08);
+      box-shadow: var(--shadow);
+    }
+
+    .landing-title {
+      margin: 0;
+      font-size: clamp(2rem, 1.5rem + 1.45vw, 3rem);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: var(--text);
+    }
+
+    .landing-subtitle {
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .camera-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 26px;
+    }
+
+    .camera-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 170px;
+      padding: 24px;
+      border-radius: 24px;
+      border: 1px solid rgba(40, 87, 59, 0.12);
+      background: linear-gradient(145deg, #f9fbf5, #eaf1df);
+      color: var(--green-dark);
+      font-size: clamp(1.45rem, 1.05rem + 1vw, 2rem);
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    }
+
+    .camera-link:hover,
+    .camera-link:focus-visible {
+      transform: translateY(-3px);
+      border-color: rgba(40, 87, 59, 0.24);
+      box-shadow: 0 18px 30px rgba(40, 87, 59, 0.12);
+    }
+
+    .camera-view {
+      min-height: 100svh;
+      height: 100svh;
+      padding: 20px;
+      gap: 18px;
+      flex-direction: column;
+    }
+
+    .camera-shell {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 1fr minmax(260px, 320px);
+      gap: 16px;
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .video-panel,
+    .control-panel {
+      border-radius: 24px;
+      background: var(--surface-strong);
+      border: 1px solid rgba(31, 37, 32, 0.08);
+      box-shadow: var(--shadow);
+    }
+
+    .video-panel {
+      padding: 12px;
+      min-height: 0;
+    }
+
+    .viewer {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #000;
+      border-radius: 16px;
+    }
+
+    .title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .title-row h1 {
+      margin: 0;
+      font-size: clamp(1.6rem, 1.2rem + 1vw, 2.1rem);
+      color: var(--green-dark);
+      letter-spacing: -0.01em;
+    }
+
+    .back-btn {
+      border: 1px solid rgba(40, 87, 59, 0.14);
+      border-radius: 14px;
+      background: linear-gradient(145deg, #f9fbf5, #eaf1df);
+      color: var(--green-dark);
+      padding: 12px 18px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .control-panel {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 64px;
+      justify-content: flex-start;
+    }
+
+    .dpad {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-rows: repeat(3, 84px);
+      gap: 12px;
+      align-items: center;
+      margin-top: 4px;
+    }
+
+    .dpad .ptz.up {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .dpad .ptz.left {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .dpad .ptz.right {
+      grid-column: 3;
+      grid-row: 2;
+    }
+
+    .dpad .ptz.down {
+      grid-column: 2;
+      grid-row: 3;
+    }
+
+    .ptz {
+      border: 1px solid rgba(40, 87, 59, 0.14);
+      border-radius: 14px;
+      background: linear-gradient(145deg, #f9fbf5, #eaf1df);
+      color: var(--green-dark);
+      font-size: clamp(1.15rem, 1rem + 0.5vw, 1.5rem);
+      font-weight: 700;
+      cursor: pointer;
+      padding: 14px 10px;
+      min-height: 64px;
+      transition: transform 140ms ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      touch-action: none;
+    }
+
+    .ptz:active {
+      transform: scale(0.98);
+    }
+
+    .ptz i {
+      width: 36px;
+      height: 36px;
+      stroke-width: 2.2;
+    }
+
+    .zoom-group {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    @media (max-width: 940px) {
+      .camera-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .video-panel {
+        min-height: 52svh;
+      }
+
+      .dpad {
+        grid-template-rows: repeat(3, 72px);
+      }
+
+      .ptz i {
+        width: 30px;
+        height: 30px;
+      }
+
+      .camera-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main id="landing" class="screen landing active">
+    <section class="landing-card">
+      <h1 class="landing-title">Podgląd Kamer</h1>
+      <p class="landing-subtitle">Wybierz kamerę, aby przejść do transmisji na żywo i panelu sterowania PTZ.</p>
+      <div class="camera-grid">
+        <button class="camera-link" data-camera="cam1" data-label="Kamera 1">Kamera 1</button>
+        <button class="camera-link" data-camera="cam2" data-label="Kamera 2">Kamera 2</button>
+        <button class="camera-link" data-camera="cam3" data-label="Kamera 3">Kamera 3</button>
+        <button class="camera-link" data-camera="cam4" data-label="Kamera 4">Kamera 4</button>
+      </div>
+    </section>
+  </main>
+
+  <section id="cameraScreen" class="screen camera-view">
+    <div class="title-row">
+      <h1 id="cameraTitle">Kamera</h1>
+      <button id="backButton" class="back-btn">Wstecz</button>
+    </div>
+
+    <div class="camera-shell">
+      <div class="video-panel">
+        <iframe
+          id="cameraFrame"
+          class="viewer"
+          src="https://stream.gminapelczyce.com/cam1/"
+          allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+          allowfullscreen></iframe>
+      </div>
+
+      <div class="control-panel">
+        <div class="dpad">
+          <button class="ptz up" data-ptz-action="up" aria-label="Góra"><i data-lucide="arrow-up"></i></button>
+          <button class="ptz left" data-ptz-action="left" aria-label="Lewo"><i data-lucide="arrow-left"></i></button>
+          <button class="ptz right" data-ptz-action="right" aria-label="Prawo"><i data-lucide="arrow-right"></i></button>
+          <button class="ptz down" data-ptz-action="down" aria-label="Dół"><i data-lucide="arrow-down"></i></button>
+        </div>
+
+        <div class="zoom-group">
+          <button class="ptz" data-ptz-action="zoomIn">Zoom In<i data-lucide="zoom-in"></i></button>
+          <button class="ptz" data-ptz-action="zoomOut">Zoom Out<i data-lucide="zoom-out"></i></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    const STREAM_BASE_URL = 'https://stream.gminapelczyce.com';
+    const PTZ_ENDPOINT = `${STREAM_BASE_URL}/api/ptz`;
+    const landing = document.getElementById('landing');
+    const cameraScreen = document.getElementById('cameraScreen');
+    const viewer = document.getElementById('cameraFrame');
+    const cameraTitle = document.getElementById('cameraTitle');
+    const backButton = document.getElementById('backButton');
+    const cameraButtons = document.querySelectorAll('[data-camera]');
+    const ptzButtons = document.querySelectorAll('[data-ptz-action]');
+    let currentCamera = 'cam1';
+
+    function setCamera(camera, label) {
+      currentCamera = camera;
+      cameraTitle.textContent = label;
+      viewer.src = `${STREAM_BASE_URL}/${camera}/`;
+    }
+
+    function openCamera(camera, label) {
+      setCamera(camera, label);
+      landing.classList.remove('active');
+      cameraScreen.classList.add('active');
+    }
+
+    function goHome() {
+      cameraScreen.classList.remove('active');
+      landing.classList.add('active');
+    }
+
+    async function sendPtz(camera, action) {
+      try {
+        const response = await fetch(PTZ_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ camera, action })
+        });
+
+        if (!response.ok) {
+          console.error('PTZ request failed', response.status, await response.text());
+        }
+      } catch (error) {
+        console.error('PTZ network error', error);
+      }
+    }
+
+    function bindPtzButton(button, action) {
+      const start = (event) => {
+        if (event.type.startsWith('touch')) {
+          event.preventDefault();
+        }
+        sendPtz(currentCamera, action);
+      };
+
+      const stop = (event) => {
+        if (event.type.startsWith('touch')) {
+          event.preventDefault();
+        }
+        sendPtz(currentCamera, 'stop');
+      };
+
+      button.addEventListener('mousedown', start);
+      button.addEventListener('mouseup', stop);
+      button.addEventListener('mouseleave', stop);
+      button.addEventListener('touchstart', start, { passive: false });
+      button.addEventListener('touchend', stop, { passive: false });
+      button.addEventListener('touchcancel', stop, { passive: false });
+    }
+
+    cameraButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        openCamera(button.dataset.camera, button.dataset.label);
+      });
+    });
+
+    ptzButtons.forEach((button) => {
+      bindPtzButton(button, button.dataset.ptzAction);
+    });
+
+    backButton.addEventListener('click', goHome);
+    setCamera(currentCamera, 'Kamera 1');
+
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+  </script>
+</body>
+</html>
