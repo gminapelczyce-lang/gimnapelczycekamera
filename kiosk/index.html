@@ -316,10 +316,16 @@
       transform: scale(0.98);
     }
 
-    .ptz i {
-      width: 54px;
-      height: 54px;
+    .ptz svg {
+      width: 68px;
+      height: 68px;
       stroke-width: 2.2;
+      flex-shrink: 0;
+    }
+
+    .zoom-group .ptz svg {
+      width: 34px;
+      height: 34px;
     }
 
     .zoom-group {
@@ -384,9 +390,14 @@
         width: min(100%, 320px);
       }
 
-      .ptz i {
-        width: 30px;
-        height: 30px;
+      .ptz svg {
+        width: 42px;
+        height: 42px;
+      }
+
+      .zoom-group .ptz svg {
+        width: 21px;
+        height: 21px;
       }
 
       .camera-grid {
