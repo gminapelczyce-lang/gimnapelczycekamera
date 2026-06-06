@@ -182,19 +182,19 @@
     .camera-view {
       min-height: 100svh;
       height: 100svh;
-      padding: 20px;
-      gap: 18px;
+      padding: 16px;
+      gap: 14px;
       flex-direction: column;
     }
 
     .camera-shell {
       flex: 1;
       min-height: 0;
-      display: grid;
-      grid-template-columns: 1fr minmax(260px, 320px);
-      gap: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
       width: 100%;
-      max-width: 1400px;
+      max-width: 760px;
       margin: 0 auto;
     }
 
@@ -209,6 +209,7 @@
     .video-panel {
       padding: 12px;
       min-height: 0;
+      height: min(58svh, 820px);
     }
 
     .viewer {
@@ -225,7 +226,7 @@
       justify-content: space-between;
       gap: 12px;
       width: 100%;
-      max-width: 1400px;
+      max-width: 760px;
       margin: 0 auto;
     }
 
@@ -251,7 +252,7 @@
       padding: 18px;
       display: flex;
       flex-direction: column;
-      gap: 64px;
+      gap: 24px;
       justify-content: flex-start;
     }
 
@@ -261,7 +262,8 @@
       grid-template-rows: repeat(3, 84px);
       gap: 12px;
       align-items: center;
-      margin-top: 4px;
+      margin: 4px auto 0;
+      width: min(100%, 320px);
     }
 
     .dpad .ptz.up {
@@ -314,7 +316,7 @@
 
     .zoom-group {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 10px;
     }
 
@@ -343,12 +345,8 @@
         display: none;
       }
 
-      .camera-shell {
-        grid-template-columns: 1fr;
-      }
-
       .video-panel {
-        min-height: 52svh;
+        height: min(50svh, 560px);
       }
 
       .dpad {
