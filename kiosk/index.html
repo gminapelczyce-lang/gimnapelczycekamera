@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
   <title>Kiosk kamer</title>
   <style>
     :root {
@@ -474,7 +475,27 @@
     const backButton = document.getElementById('backButton');
     const cameraButtons = document.querySelectorAll('[data-camera]');
     const ptzButtons = document.querySelectorAll('[data-ptz-action]');
+    const INACTIVITY_TIMEOUT_MS = 3 * 60 * 1000;
     let currentCamera = 'cam1';
+    let inactivityTimerId = null;
+
+    function clearInactivityTimer() {
+      if (inactivityTimerId) {
+        window.clearTimeout(inactivityTimerId);
+        inactivityTimerId = null;
+      }
+    }
+
+    function resetInactivityTimer() {
+      if (!cameraScreen.classList.contains('active')) {
+        return;
+      }
+
+      clearInactivityTimer();
+      inactivityTimerId = window.setTimeout(() => {
+        goHome();
+      }, INACTIVITY_TIMEOUT_MS);
+    }
 
     function setCamera(camera, label, streamUrl) {
       currentCamera = camera;
@@ -486,9 +507,11 @@
       setCamera(camera, label, streamUrl);
       landing.classList.remove('active');
       cameraScreen.classList.add('active');
+      resetInactivityTimer();
     }
 
     function goHome() {
+      clearInactivityTimer();
       cameraScreen.classList.remove('active');
       landing.classList.add('active');
     }
@@ -514,6 +537,7 @@
         if (event.type.startsWith('touch')) {
           event.preventDefault();
         }
+        resetInactivityTimer();
         sendPtz(currentCamera, action);
       };
 
@@ -521,6 +545,7 @@
         if (event.type.startsWith('touch')) {
           event.preventDefault();
         }
+        resetInactivityTimer();
         sendPtz(currentCamera, 'stop');
       };
 
@@ -543,6 +568,9 @@
     });
 
     backButton.addEventListener('click', goHome);
+    ['pointerdown', 'pointermove', 'keydown', 'touchstart'].forEach((eventName) => {
+      cameraScreen.addEventListener(eventName, resetInactivityTimer, { passive: true });
+    });
     setCamera(currentCamera, 'Kamera 1', 'https://stream.gminapelczyce.com/cam1/');
 
     if (window.lucide) {
