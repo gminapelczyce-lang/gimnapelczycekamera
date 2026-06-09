@@ -216,9 +216,18 @@
       width: 100%;
       padding: 14px;
       min-height: auto;
-      aspect-ratio: 16 / 9;
       height: auto;
+      overflow: visible;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .viewer-wrap {
+      width: 100%;
+      aspect-ratio: 16 / 9;
       overflow: hidden;
+      border-radius: 16px;
     }
 
     .viewer {
@@ -226,8 +235,9 @@
       height: 100%;
       border: 0;
       background: #000;
-      border-radius: 16px;
+      display: block;
     }
+
 
     .title-row {
       display: flex;
@@ -263,6 +273,32 @@
       flex-direction: column;
       gap: 34px;
       justify-content: flex-start;
+    }
+
+    .camera-switcher {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .camera-switcher-button {
+      border: 1px solid rgba(40, 87, 59, 0.14);
+      border-radius: 18px;
+      background: linear-gradient(145deg, #f9fbf5, #eaf1df);
+      color: var(--green-dark);
+      padding: 20px 14px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      min-height: 82px;
+    }
+
+    .camera-switcher-button.active {
+      border-color: #1f4a32;
+      background: linear-gradient(145deg, #2f6a47, #1f4a32);
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.12);
+      color: #f7f4eb;
+      cursor: default;
     }
 
     .dpad {
@@ -366,7 +402,6 @@
       }
 
       .video-panel {
-        aspect-ratio: 16 / 9;
         height: auto;
       }
 
@@ -378,6 +413,10 @@
       .control-panel {
         padding: 18px;
         gap: 24px;
+      }
+
+      .camera-switcher {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .camera-link {
@@ -440,12 +479,15 @@
 
     <div class="camera-shell">
       <div class="video-panel">
-        <iframe
-          id="cameraFrame"
-          class="viewer"
-          src="https://stream.gminapelczyce.com/cam1/"
-          allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
-          allowfullscreen></iframe>
+        <div class="viewer-wrap">
+          <iframe
+            id="cameraFrame"
+            class="viewer"
+            src="https://stream.gminapelczyce.com/cam1/"
+            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+            allowfullscreen></iframe>
+        </div>
+        <div id="cameraSwitcher" class="camera-switcher" aria-label="Przełącznik kamer"></div>
       </div>
 
       <div class="control-panel">
@@ -473,9 +515,16 @@
     const viewer = document.getElementById('cameraFrame');
     const cameraTitle = document.getElementById('cameraTitle');
     const backButton = document.getElementById('backButton');
+    const cameraSwitcher = document.getElementById('cameraSwitcher');
     const cameraButtons = document.querySelectorAll('[data-camera]');
     const ptzButtons = document.querySelectorAll('[data-ptz-action]');
     const INACTIVITY_TIMEOUT_MS = 3 * 60 * 1000;
+    const cameraConfigs = {
+      cam1: { label: 'Kamera 1', streamUrl: 'https://stream.gminapelczyce.com/cam1/' },
+      cam2: { label: 'Kamera 2', streamUrl: 'https://stream.gminapelczyce.com/cam2/' },
+      cam3: { label: 'Kamera 3', streamUrl: 'https://stream.gminapelczyce.com/cam3/' },
+      cam4: { label: 'Kamera 4', streamUrl: 'https://stream.gminapelczyce.com/cam4/' },
+    };
     let currentCamera = 'cam1';
     let inactivityTimerId = null;
 
@@ -501,6 +550,7 @@
       currentCamera = camera;
       cameraTitle.textContent = label;
       viewer.src = streamUrl;
+      renderCameraSwitcher();
     }
 
     function openCamera(camera, label, streamUrl) {
@@ -514,6 +564,32 @@
       clearInactivityTimer();
       cameraScreen.classList.remove('active');
       landing.classList.add('active');
+    }
+
+    function renderCameraSwitcher() {
+      cameraSwitcher.innerHTML = Object.entries(cameraConfigs)
+        .map(([cameraKey, config]) => `
+          <button
+            class="camera-switcher-button${cameraKey === currentCamera ? ' active' : ''}"
+            data-switch-camera="${cameraKey}"
+            ${cameraKey === currentCamera ? 'aria-current="true"' : ''}
+          >
+            ${config.label}
+          </button>
+        `)
+        .join('');
+
+      cameraSwitcher.querySelectorAll('[data-switch-camera]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const nextCamera = button.dataset.switchCamera;
+          if (!nextCamera || nextCamera === currentCamera) {
+            return;
+          }
+
+          const config = cameraConfigs[nextCamera];
+          openCamera(nextCamera, config.label, config.streamUrl);
+        });
+      });
     }
 
     async function sendPtz(camera, action) {
@@ -571,7 +647,7 @@
     ['pointerdown', 'pointermove', 'keydown', 'touchstart'].forEach((eventName) => {
       cameraScreen.addEventListener(eventName, resetInactivityTimer, { passive: true });
     });
-    setCamera(currentCamera, 'Kamera 1', 'https://stream.gminapelczyce.com/cam1/');
+    setCamera(currentCamera, cameraConfigs.cam1.label, cameraConfigs.cam1.streamUrl);
 
     if (window.lucide) {
       window.lucide.createIcons();

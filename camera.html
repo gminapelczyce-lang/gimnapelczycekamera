@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Podglad online systemu obserwacji ptakow w gminie Pelczyce. Kamera na zywo z obszaru jeziora Stawno."
+      content="Podglad online systemu obserwacji ptakow w gminie Pelczyce. Kamera na zywo z obszaru jeziora Panieńskiego."
     />
     <link rel="icon" type="image/png" href="./logo.png" />
     <title>Kamera 1 | System obserwacji ptakow</title>
@@ -138,6 +138,42 @@
         background: #000000;
       }
 
+      .camera-switcher {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 20px;
+      }
+
+      .camera-switcher-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 68px;
+        padding: 14px 18px;
+        border-radius: 18px;
+        border: 1px solid rgba(40, 87, 59, 0.12);
+        background: linear-gradient(145deg, #f9fbf5, #eaf1df);
+        color: var(--green-dark);
+        font-size: 1.05rem;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .camera-switcher-link:hover,
+      .camera-switcher-link:focus-visible {
+        text-decoration: underline;
+      }
+
+      .camera-switcher-link.active {
+        border-color: #1f4a32;
+        background: linear-gradient(145deg, #2f6a47, #1f4a32);
+        box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.12);
+        color: #f7f4eb;
+        pointer-events: none;
+      }
+
+
 
       footer {
         padding: 18px 0 24px;
@@ -239,6 +275,10 @@
           aspect-ratio: 16 / 9;
           border-radius: 18px;
         }
+
+        .camera-switcher {
+          grid-template-columns: 1fr 1fr;
+        }
       }
     </style>
   </head>
@@ -263,6 +303,7 @@
               allowfullscreen
             ></iframe>
           </div>
+          <nav id="cameraSwitcher" class="camera-switcher" aria-label="Pozostałe kamery"></nav>
         </section>
       </main>
 
@@ -285,7 +326,15 @@
         "3": "https://stream.gminapelczyce.com/cam3/?controls=1&muted=1&autoplay=1&playsinline=1",
         "4": "https://stream.gminapelczyce.com/cam4/?controls=1&muted=1&autoplay=1&playsinline=1",
       };
+      const switcher = document.getElementById("cameraSwitcher");
       const camera = cameraSources[requestedCamera] ? requestedCamera : "1";
+
+      switcher.innerHTML = Object.keys(cameraSources)
+        .map(
+          (cameraNumber) =>
+            `<a class="camera-switcher-link${cameraNumber === camera ? " active" : ""}" href="./camera.html?camera=${cameraNumber}">Kamera ${cameraNumber}</a>`,
+        )
+        .join("");
 
       document.title = "Kamera " + camera + " | System obserwacji ptakow";
       document.getElementById("stream-title").textContent = "Kamera " + camera;
